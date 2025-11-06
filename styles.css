@@ -1,0 +1,756 @@
+/* =========================
+ Vigizon - Parallax Landing
+ styles.css
+ - Tema claro por defecto, alto contraste.
+ - Optimizado para edición manual.
+ ========================= */
+
+/* ===== VARIABLES GLOBALES (Tema claro) ===== */
+:root {
+/* Paleta de colores principal */
+--bg: #a1a9b1; /* Fondo principal (gris muy claro, no blanco) */
+--surface: #ffffff; /* Fondo de tarjetas (blanco) */
+--border: #e4e9f0; /* Borde sutil para tarjetas y inputs */
+--muted: #040127; /* Texto secundario (gris legible) */
+--text: #000000; /* Texto principal (oscuro, alto contraste) */
+ 
+/* Colores de acento */
+--accent: #094b76; /* Azul Vigizon */
+--accent-2: #01a5ff; /* Azul claro */
+
+/* Layout y UX */
+--card-radius: 14px;
+--container: 1200px;
+--transition: 300ms cubic-bezier(.2,.9,.3,1);
+--shadow: 0 8px 25px rgba(26, 37, 51, 0.06); /* Sombra suave para tarjetas */
+}
+
+/* ===== BASE Y RESET ===== */
+* {
+box-sizing: border-box;
+}
+
+html, body {
+height: 100%;
+}
+
+body {
+margin: 0;
+font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+background: var(--bg); /* Fondo gris claro */
+color: var(--text); /* Texto oscuro */
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+overflow-x: hidden;
+}
+
+/* Contenedor principal */
+.container {
+max-width: var(--container);
+margin: 0 auto;
+padding: 0 20px;
+}
+
+/* ===== HEADER (Navegación) ===== */
+.header {
+ position: fixed;
+ top: 0;
+ left: 0;
+ right: 0;
+ z-index: 120;
+ transition: background var(--transition), box-shadow var(--transition);
+ padding: 12px 0;
+}
+
+.header__inner {
+ display: flex;
+ align-items: center;
+ justify-content: space-between;
+ gap: 12px;
+}
+
+/* --- ESTADO 1: HEADER SÓLIDO (AL HACER SCROLL) --- */
+
+.header--solid {
+ /*   * CAMBIO: Antes 'rgba(255, 255, 255, 0.85)' (blanco).
+  * Ahora usa el color de fondo gris claro (#f7f9fb) con transparencia.
+  */
+ background: rgba(247, 249, 251, 0.85); /* Fondo gris claro translúcido */
+ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+ backdrop-filter: blur(8px);
+}
+
+/* --- ESTADO 2: HEADER TRANSPARENTE (ARRIBA DE TODO) --- */
+
+.header--transparent {
+ background: transparent;
+}
+
+/* * CAMBIO: Reglas nuevas para el estado transparente (texto blanco)
+ */
+.header--transparent .brand {
+ color: #ffffff; /* Logo blanco */
+}
+.header--transparent .nav a {
+ color: rgba(255, 255, 255, 0.85); /* Enlaces blancos (ligeramente opacos) */
+}
+.header--transparent .nav a:hover {
+ color: #ffffff; /* Enlace blanco al pasar el mouse */
+ background: rgba(255, 255, 255, 0.1); /* Fondo "glass" sutil */
+}
+.header--transparent .btn--icon {
+ color: #ffffff; /* Icono de menú móvil (☰) blanco */
+}
+.header--transparent .btn--small {
+ /* Borde del botón WA (para que no sea oscuro) */
+ border-color: rgba(255, 255, 255, 0.2); 
+}
+
+
+/* --- ESTILOS BASE DEL HEADER (se aplican por defecto en estado sólido) --- */
+
+/* Logo (Oscuro por defecto) */
+.brand {
+ display: flex;
+ align-items: center;
+ gap: 12px;
+ text-decoration: none;
+ color: var(--muted); /* Texto oscuro (se aplica en .header--solid) */
+ transition: color var(--transition); /* Transición de color */
+}
+
+/* --- Lógica de logos intercambiables --- */
+
+/* 1. El nuevo contenedor */
+.brand__logo-container {
+ position: relative;
+ width: 40px; /* Debe ser el ancho de tu logo */
+ height: 40px; /* Debe ser el alto de tu logo */
+ /* Esto asegura que el texto '.brand__name' se alinee correctamente */
+ display: inline-block;
+ vertical-align: middle;
+}
+
+/* 2. Estilo base para AMBOS logos */
+.brand__logo {
+ width: 40px;
+ height: auto;
+ 
+ /* Posiciona los logos uno encima del otro */
+ position: absolute;
+ left: 0;
+ top: 50%;
+ transform: translateY(-50%);
+
+ /* ¡Importante! Añade la transición de opacidad */
+ transition: opacity var(--transition);
+}
+
+/* 3. Lógica de opacidad (Estado Sólido / Scrolled) */
+/* Por defecto, el logo oscuro (dark) es visible y el blanco (light) está oculto */
+.logo--dark { opacity: 1; }
+.logo--light { opacity: 0; }
+
+
+/* --- Reglas del Header Transparente (que ya tenías) --- */
+/* ... (estas reglas ya existen en tu CSS, solo verificamos que estén) ... */
+
+/* 4. Lógica de opacidad (Estado Transparente / Superior) */
+/* Sobrescribe los valores por defecto cuando el header es transparente */
+.header--transparent .logo--dark { opacity: 0; } /* Oculta el logo oscuro */
+.header--transparent .logo--light { opacity: 1; } /* Muestra el logo blanco */
+
+/* ... (resto de tus reglas .header--transparent) ... */
+
+.brand__name {
+ font-family: Calibri;
+ font-weight: 700;
+ font-size: 28px;
+ letter-spacing: 0.1px;  
+}
+
+/* Navegación (Desktop) (Oscuro/gris por defecto) */
+.nav {
+ display: flex;
+ gap: 20px;
+ font-size: 20px;
+ align-items: center;
+}
+
+.nav a {
+ color: var(--muted); /* Texto secundario gris (se aplica en .header--solid) */
+ text-decoration: none;
+ font-weight: 600;
+ padding: 8px 10px;
+ border-radius: 8px;
+ transition: color var(--transition), background var(--transition);
+}
+
+.nav a:hover {
+ color: var(--text); /* Texto principal oscuro (se aplica en .header--solid) */
+ background: rgba(0, 0, 0, 0.03); /* Fondo sutil */
+}
+
+/* Controles del Header */
+.header__controls {
+ display: flex;
+ align-items: center;
+ gap: 10px;
+}
+
+/* Botón base (usado para menú móvil) (Oscuro por defecto) */
+.btn--icon {
+ background: transparent;
+ border: none;
+ color: var(--text); /* Icono oscuro (se aplica en .header--solid) */
+ cursor: pointer;
+ font-size: 20px;
+ transition: color var(--transition); /* Transición de color */
+}
+
+.btn--small {
+ padding: 8px 10px;
+ border-radius: 10px;
+ border: 1px solid var(--border); /* Borde sutil (se aplica en .header--solid) */
+ background: transparent;
+ color: var(--text); /* Texto oscuro */
+ transition: border-color var(--transition); /* Transición de borde */
+}
+
+/* Botón de WhatsApp (siempre verde) */
+.btn--whatsapp {
+ background: linear-gradient(90deg, #25D366, #06C755);
+ color: white;
+ border: none;
+}
+
+/* Solo visible en móvil */
+.mobile-only {
+ display: none;
+}
+
+/* ===== HERO (Sección Inicio) ===== */
+.hero {
+position: relative;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+text-align: center;
+overflow: hidden;
+/* Texto claro para el Hero */
+color: #ffffff; 
+}
+
+/* Imagen de fondo del Hero */
+.hero__bg {
+position: absolute;
+inset: 0;
+background-position: center;
+background-size: cover;
+transform: translateZ(0);
+will-change: transform;
+/* Filtro oscuro para que el texto blanco resalte */
+filter: contrast(1.05) saturate(1.05) brightness(0.45);
+z-index: 0;
+}
+
+/* Video de fondo del Hero */
+.hero__video {
+position: absolute;
+inset: 0;
+width: 100%;
+height: 100%;
+object-fit: cover;
+z-index: 1; /* <-- AÑADE ESTO (para que esté sobre hero__bg) */
+filter: brightness(.30);
+/* AÑADE ESTO: La duración del fade (0.5 segundos) */
+transition: opacity 1s cubic-bezier(.4, 0, .2, 1);
+}
+
+/* AÑADE ESTO: La clase que pondrá JS para ocultar el video */
+.hero__video.is-fading {
+opacity: 0;
+}
+
+/* Contenido del Hero (encima del fondo) */
+.hero__content {
+position: relative;
+z-index: 10;
+padding: 24px;
+max-width: 1000px;
+}
+
+.hero__badge {
+display: inline-block;
+background: linear-gradient(90deg, var(--accent), var(--accent-2));
+color: white;
+padding: 6px 12px;
+border-radius: 999px;
+font-weight: 700;
+margin-bottom: 18px;
+}
+
+.hero__title {
+font-family: Montserrat, Inter;
+font-size: clamp(2rem, 5vw, 3.4rem);
+margin: 0 0 10px;
+line-height: 1.02;
+}
+
+.hero__lead {
+color: rgba(255, 255, 255, 0.85); /* Texto "muted" claro */
+font-size: 1.05rem;
+margin-bottom: 22px;
+}
+
+.hero__actions {
+display: flex;
+gap: 12px;
+justify-content: center;
+flex-wrap: wrap;
+margin-bottom: 18px;
+}
+
+/* Botones genéricos */
+.btn {
+display: inline-flex;
+align-items: center;
+gap: 10px;
+padding: 15px 40px;
+font-size: 1.2rem;
+border-radius: 10px;
+border: none;
+cursor: pointer;
+transition: transform .18s ease, box-shadow .18s ease;
+justify-content: center;
+}
+
+.btn--primary {
+background: linear-gradient(90deg, var(--accent), var(--accent-2));
+color: white;
+box-shadow: 0 8px 30px rgba(3, 50, 120, 0.18);
+}
+
+/* Botón fantasma (para Hero) */
+.btn--ghost {
+background: transparent;
+border: 1px solid rgba(255, 255, 255, 0.2); /* Borde claro */
+color: #ffffff; /* Texto claro */
+}
+
+/* Botón delineado (para el resto de la página) */
+.btn--outline {
+background: transparent;
+border: 1px solid var(--border); /* Borde sutil oscuro */
+color: var(--text); /* Texto oscuro */
+}
+
+.hero__features {
+display: flex;
+gap: 20px;
+justify-content: center;
+color: rgba(255, 255, 255, 0.7); /* Texto "muted" muy claro */
+margin-top: 12px;
+flex-wrap: wrap;
+}
+
+/* ===== SECCIONES ===== */
+.section {
+padding: 70px 0;
+}
+
+.section__title {
+text-align: center;
+font-size: clamp(1.4rem, 3.5vw, 2rem);
+margin-bottom: 70px;
+color: var(--text); /* Título oscuro */
+}
+
+.section__subtitle {
+text-align: center;
+color: var(--muted); /* Subtítulo gris */
+margin-bottom: 28px;
+}
+
+/* Secciones con fondo parallax (Servicios, Galería) */
+.section--parallax {
+position: relative;
+background-attachment: fixed;
+background-size: cover;
+background-position: center;
+overflow: hidden;
+z-index: 1; /* Contexto de apilamiento */
+}
+
+/* Overlay claro para secciones parallax */
+.section--parallax::before {
+content: '';
+position: absolute;
+inset: 0;
+/* Overlay blanco translúcido para que el texto oscuro resalte */
+background: linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0.85));
+z-index: 1; /* Detrás del contenido */
+}
+
+/* Contenido de la sección parallax (encima del overlay) */
+.section--parallax .container {
+position: relative;
+z-index: 2;
+}
+
+/* Sección de fondo claro (Kits, Testimonios) */
+.section--cards {
+background: transparent; /* Usa el fondo --bg del body */
+}
+
+/* ===== TARJETAS Y GRIDS ===== */
+.grid {
+display: grid;
+gap: 20px;
+/* 🚀 Asegura que las filas se ajusten a la altura del contenido más alto */
+align-items: stretch; 
+}
+
+.grid--3 {
+grid-template-columns: repeat(3, 1fr);
+}
+
+/* Tarjeta estándar (para Servicios) */
+.card {
+background: var(--surface); /* Fondo blanco */
+padding: 18px;
+border-radius: var(--card-radius);
+border: 1px solid var(--border); /* Borde sutil */
+box-shadow: var(--shadow); /* Sombra suave */
+transition: transform var(--transition), box-shadow var(--transition);
+}
+
+.card:hover {
+transform: translateY(-8px);
+box-shadow: 0 14px 30px rgba(26, 37, 51, 0.09); /* Sombra más fuerte */
+}
+
+.card__img {
+width: 100%;
+height: 170px;
+object-fit: cover;
+border-radius: 10px;
+margin-bottom: 12px;
+}
+
+.price-card {
+padding: 45px;
+border-radius: 20px;
+text-align: center;
+position: relative;
+overflow: visible;
+/* 🚀 CAMBIO CLAVE 1: Configurar como Flexbox vertical */
+display: flex; 
+flex-direction: column;
+height: 100%; /* Asegura que la tarjeta ocupe toda la altura de su fila en el grid */
+}
+
+.price-card--light {
+background: var(--surface); /* Fondo blanco */
+border: 1px solid var(--border);
+}
+
+.price-card--featured {
+background: var(--surface); /* Fondo blanco */
+border: 3px solid var(--accent); /* Borde azul */
+box-shadow: 0 14px 40px rgba(0, 123, 255, 0.12); /* Sombra azulada */
+}
+
+.price {
+font-size: 2.5rem;
+font-weight: 700;
+color: var(--accent); /* Precio en azul */
+margin: 10px 0;
+}
+
+.price-list {
+font-size: 1.1rem;      
+text-align: justify;
+padding: 0;
+margin: 20px 0 20px 0; 
+color: var(--muted); 
+flex-grow: 1; 
+}
+
+.price-actions {
+display: flex;
+gap: 8px;
+justify-content: center;
+/* 🚀 CAMBIO CLAVE 3: Asegura que el contenedor ocupe el ancho disponible */
+width: 100%; 
+}
+
+.price-actions .btn {
+    width: 100%; 
+}
+
+/* Cinta "Más pedido" */
+.ribbon {
+position: absolute;
+left: 50%;
+transform: translateX(-50%) translateY(-50%);
+top: -14px;
+background: var(--accent);
+color: white;
+padding: 6px 12px;
+border-radius: 999px;
+font-weight: 700;
+box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== GALERÍA ===== */
+.gallery-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 12px;
+}
+
+.gallery-grid img {
+width: 100%;
+height: 160px;
+object-fit: cover;
+border-radius: 10px;
+cursor: pointer;
+transition: transform .25s;
+border: 1px solid var(--border);
+}
+
+.gallery-grid img:hover {
+transform: scale(1.03);
+}
+
+/* ===== TESTIMONIOS Y MARCAS ===== */
+.testimonial {
+background: var(--surface); /* Fondo blanco */
+border: 1px solid var(--border);
+padding: 20px;
+border-radius: 12px;
+font-style: italic;
+color: var(--muted);
+}
+
+.testimonial cite {
+color: var(--text);
+font-weight: 600;
+}
+
+.brands {
+display: flex;
+align-items: center;
+justify-content: start;
+}
+
+.brands img {
+height: 36px;
+margin-right: 12px;
+opacity: .8;
+/* Se integra mejor al fondo claro */
+mix-blend-mode: multiply; 
+}
+
+/* ===== CONTACTO ===== */
+.contact-grid {
+display: grid;
+grid-template-columns: 1fr 380px;
+gap: 28px;
+align-items: start;
+}
+
+.contact-form label {
+display: block;
+margin-bottom: 6px;
+font-weight: 600;
+}
+
+.contact-form input,
+.contact-form textarea {
+width: 100%;
+padding: 12px;
+border-radius: 10px;
+border: 1px solid var(--border); /* Borde sutil */
+background: var(--surface); /* Fondo blanco */
+color: var(--text); /* Texto oscuro */
+margin-bottom: 12px;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+color: var(--muted);
+}
+
+.form-actions {
+display: flex;
+gap: 12px;
+margin-top: 8px;
+}
+
+.form-note {
+color: var(--muted);
+font-size: 0.9rem;
+}
+
+.contact-info a {
+color: var(--accent); /* Enlaces en azul */
+text-decoration: none;
+}
+
+/* Insignias de contacto */
+.badge {
+display: inline-block;
+padding: 6px 10px;
+border-radius: 999px;
+background: var(--border); /* Fondo gris claro */
+color: var(--muted);
+margin-right: 8px;
+font-size: 0.9rem;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+padding: 28px 0;
+background: var(--bg); /* Fondo gris claro */
+border-top: 1px solid var(--border); /* Separador superior */
+color: var(--muted);
+}
+
+.footer__inner {
+display: flex;
+justify-content: space-between;
+align-items: center;
+gap: 12px;
+flex-wrap: wrap; /* Para móviles */
+}
+
+.footer-nav a {
+color: var(--muted);
+text-decoration: none;
+margin-left: 12px;
+}
+.footer-nav a:hover {
+color: var(--text);
+}
+
+
+/* ===== MODAL (Galería) ===== */
+.modal {
+position: fixed;
+inset: 0;
+display: none; /* Oculto por defecto */
+align-items: center;
+justify-content: center;
+/* Fondo oscuro para el modal */
+background: rgba(26, 37, 51, 0.85); 
+backdrop-filter: blur(5px);
+z-index: 9999;
+padding: 20px;
+}
+
+/* Se muestra con JS */
+.modal[aria-hidden="false"] {
+display: flex;
+}
+
+.modal__close {
+position: absolute;
+top: 18px;
+right: 22px;
+background: transparent;
+border: none;
+color: white;
+font-size: 36px;
+cursor: pointer;
+}
+
+.modal img {
+max-width: 90vw;
+max-height: 80vh;
+border-radius: 10px;
+}
+
+/* ===== BOTÓN FLOTANTE WA ===== */
+.floating-wa {
+position: fixed;
+right: 20px;
+bottom: 20px;
+width: 56px;
+height: 56px;
+border-radius: 50%;
+background: linear-gradient(90deg, #25D366, #06C755);
+display: grid;
+place-items: center;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+z-index: 999;
+}
+
+/* ===== ANIMACIONES ===== */
+/* Elementos que aparecen al hacer scroll */
+.reveal {
+opacity: 0;
+transform: translateY(14px);
+transition: opacity .75s ease, transform .75s ease;
+}
+
+.reveal.in-view {
+opacity: 1;
+transform: translateY(0);
+}
+
+/* ===== RESPONSIVE Y MENÚ MÓVIL ===== */
+@media (max-width: 980px) {
+.grid--3 { grid-template-columns: repeat(2, 1fr); }
+.gallery-grid { grid-template-columns: repeat(2, 1fr); }
+.contact-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+.grid--3 { grid-template-columns: 1fr; }
+.mobile-only { display: inline-block; } /* Muestra el botón '☰' */
+ 
+/* Oculta el menú de escritorio */
+.nav {
+display: none; 
+position: absolute;
+top: 100%; /* Abajo del header */
+left: 0;
+right: 0;
+background: var(--surface); /* Fondo blanco */
+border-bottom: 1px solid var(--border);
+box-shadow: var(--shadow);
+flex-direction: column;
+align-items: stretch;
+padding: 10px;
+gap: 5px;
+}
+
+/* Clase que el JS añade para mostrar el menú */
+.nav.nav--open {
+	display: flex; 
+}
+
+.nav a {
+text-align: center;
+padding: 12px;
+background: transparent;
+}
+
+.nav a:hover {
+background: rgba(0, 0, 0, 0.03);
+}
+/* Estilo temporal para centrar el contenido de la grilla */
+/* CSS para centrar dos elementos dentro de un contenedor grid--3 */
+@media (min-width: 768px) { /* Asumiendo que 768px es el breakpoint del grid */
+    .grid--3.price-grid-centered {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 300px)); /* Limita el ancho de las 2 columnas */
+        gap: 30px; /* Espacio entre las tarjetas */
+        justify-content: center; /* Centra los elementos horizontalmente */
+    }
+}
+}
+
